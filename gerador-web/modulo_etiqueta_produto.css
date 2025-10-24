@@ -1,0 +1,190 @@
+/* Estilos gerais da página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+.container-ui {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Seletor de idioma */
+.seletor-idioma {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seletor-idioma label {
+    font-size: 18px;
+    margin: 0;
+}
+
+.seletor-idioma select {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.seletor-idioma select:hover {
+    border-color: #007bff;
+}
+
+.seletor-idioma select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+.filial-box { margin-bottom: 15px; }
+.filial-box label { margin-right: 10px; font-weight: bold; }
+.busca-box { display: flex; flex-direction: column; }
+.busca-box label { margin-bottom: 5px; }
+textarea { padding: 8px; font-family: Consolas, monospace; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px; }
+button { padding: 10px 15px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; }
+button:hover { background-color: #0056b3; }
+.botao-imprimir { display: none; margin-top: 20px; background-color: #28a745; }
+.botao-imprimir:hover { background-color: #218838; }
+hr { margin-top: 30px; margin-bottom: 30px; border: 0; border-top: 1px solid #ddd; }
+
+/* PRÉ-VISUALIZAÇÃO NA TELA */
+.etiqueta-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+.etiqueta {
+    width: 320px; min-height: 90px; padding: 10px;
+    border: 1px dashed #333; background-color: #fff;
+    text-align: center; box-sizing: border-box; 
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+}
+.etiqueta h3 { margin: 0 0 5px 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.etiqueta .detalhes { font-size: 12px; color: #333; margin: 5px 0; }
+.barcode { width: 100%; height: 40px; }
+.etiqueta .data-emissao {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 8px;
+    color: #999;
+}
+
+
+/*
+ * =======================================================
+ * REGRAS DE IMPRESSÃO (AS QUE ESTAVAM EM FALTA)
+ * =======================================================
+ */
+
+/* 1. Define o tamanho da página da impressora */
+@page {
+    size: 105mm 29mm;
+    margin: 0;
+}
+ 
+@media print {
+    /* 2. Zera as margens do corpo da página */
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 3. Esconde a UI (Isto corrige o seu problema) */
+    body > *:not(.etiqueta-container) {
+        display: none;
+    }
+
+    /* 4. Faz o container "desaparecer" no layout */
+    .etiqueta-container {
+        display: contents; 
+    }
+
+    /* 5. A etiqueta ocupa 100% da página definida em @page */
+    .etiqueta {
+        width: 105mm;
+        height: 29mm;
+        box-sizing: border-box;
+        padding: 1.5mm 2mm; 
+        border: 1px solid #000; 
+        margin: 0;
+        overflow: hidden; 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        page-break-inside: avoid;
+        page-break-after: auto; 
+        transform: rotate(180deg); /* Rotação 180 graus */
+        position: relative; 
+    }
+
+    /* 6. Layout interno (em negrito) */
+    .etiqueta h3 {
+        white-space: normal; 
+        overflow: hidden; 
+        text-overflow: clip;
+        font-size: 9pt;
+        line-height: 1.2; 
+        margin: 0; 
+        max-height: 9mm; 
+        font-weight: bold; 
+    }
+    .etiqueta .detalhes {
+        font-size: 7pt;
+        margin: 0; 
+        font-weight: bold; 
+    }
+    .barcode {
+        width: 90%; 
+        height: 9mm; 
+        margin: 0 auto;
+    }
+    .barcode text {
+        font-weight: bold;
+    }
+    .etiqueta .data-emissao {
+        position: absolute;
+        top: 2mm; 
+        left: 1mm; 
+        writing-mode: vertical-rl; 
+        font-size: 6pt; 
+        color: #333;
+        margin: 0;
+        line-height: 1;
+        max-height: 25mm; 
+        overflow: hidden;
+        font-weight: bold; 
+    }
+}
+
+/*
+ * =======================================================
+ * ESTILO DO BOTÃO VOLTAR
+ * =======================================================
+ */
+
+.link-voltar {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.link-voltar:hover {
+    text-decoration: underline;
+}
+
+/* Ajuste no H1 para dar espaço ao link "Voltar" */
+.container-ui h1 {
+    margin-top: 0;
+}
