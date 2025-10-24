@@ -1,0 +1,538 @@
+/*
+ * =======================================================
+ * ESTILOS DA INTERFACE (UI) DO MÓDULO DE CARTAZ
+ * =======================================================
+ */
+ body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+.container-ui {
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Seletor de idioma */
+.seletor-idioma {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seletor-idioma label {
+    font-size: 18px;
+    margin: 0;
+}
+
+.seletor-idioma select {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.seletor-idioma select:hover {
+    border-color: #0056b3;
+}
+
+.seletor-idioma select:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
+}
+.container-ui h1 { margin-top: 0; }
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    padding: 15px;
+}
+legend {
+    font-weight: bold;
+    color: #0056b3;
+}
+.grupo-form, .grupo-form-radio {
+    margin-bottom: 15px;
+}
+.grupo-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+.grupo-form input[type="text"],
+.grupo-form input[type="date"],
+.grupo-form select,
+.grupo-form textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+.grupo-form-radio label {
+    margin-right: 15px;
+}
+.aviso-legenda {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: -10px;
+}
+.grid-col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+button:hover { background-color: #0056b3; }
+.botao-imprimir {
+    display: none;
+    background-color: #28a745;
+}
+.botao-imprimir:hover { background-color: #218838; }
+hr {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+/*
+ * =======================================================
+ * ESTILOS DA PRÉ-VISUALIZAÇÃO (CORRIGIDO)
+ * =======================================================
+ */
+.cartaz-container-preview {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 20px;
+}
+#cartaz-placeholder {
+    font-size: 1.2rem;
+    color: #777;
+    text-align: center;
+}
+.cartaz-preview-wrapper {
+    border: 1px dashed #999;
+    background-color: white;
+    page-break-after: always;
+    overflow: hidden; 
+}
+.cartaz-preview-wrapper:last-child {
+    page-break-after: auto; 
+}
+.cartaz-layout {
+    transform-origin: top left;
+}
+
+/* Tamanhos da PRÉ-VISUALIZAÇÃO (com zoom) */
+.formato-meia-a4 {
+    width: 89.1mm; 
+    height: 63mm;
+}
+.formato-meia-a4 .cartaz-layout {
+    width: 297mm;
+    height: 210mm;
+    transform: scale(0.3);
+}
+.formato-a4 {
+    width: 84mm;
+    height: 118.8mm;
+}
+.formato-a4 .cartaz-layout {
+    width: 210mm;
+    height: 297mm;
+    transform: scale(0.4);
+}
+.formato-a3 {
+    width: 89.1mm;
+    height: 126mm;
+}
+.formato-a3 .cartaz-layout {
+    width: 297mm;
+    height: 420mm;
+    transform: scale(0.3);
+}
+
+
+/*
+ * =======================================================
+ * ESTILOS DO CARTAZ (LAYOUT INTERNO - ATUALIZADO)
+ * =======================================================
+ */
+.cartaz-layout {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 5mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #000;
+    overflow: hidden;
+}
+
+/* --- PONTO 1: LÓGICA DE OFERTA --- */
+/* (Ponto 1): Cabeçalho sempre visível */
+.cartaz-cabecalho-oferta {
+    font-size: 120pt;
+    line-height: 1;
+    color: #FF0000; /* Vermelho */
+}
+/* (Ponto 1): A classe .em-oferta só muda o fundo */
+.cartaz-layout.em-oferta {
+    background-color: #FFFF00; /* Amarelo */
+    color: #FF0000; /* Texto principal do cartaz fica vermelho */
+}
+
+/* Descrição */
+.cartaz-descricao {
+    font-size: 70pt; /* Tamanho máximo inicial, será ajustado via JS se o texto for longo */
+    line-height: 1.1;
+    max-height: 30%;
+    overflow: hidden;
+    word-break: break-word; /* Ajuda a quebrar palavras longas para evitar overflow horizontal */
+}
+
+/* --- PONTO 3: Novo Layout de Preço Principal --- */
+.cartaz-preco-principal {
+    display: flex;
+    align-items: center; /* Alinha preço e embalagem verticalmente */
+    justify-content: center;
+    gap: 15px; /* Espaço entre o preço e a embalagem */
+    line-height: 1;
+    width: 100%;
+}
+.embalagem-container {
+    /* O container do UN/KG */
+    font-size: 60pt; /* Tamanho médio, como na imagem */
+    padding-top: 1em; /* Ajusta o alinhamento com o topo do R$ */
+}
+.cartaz-preco-principal .cifrao {
+    font-size: 50pt;
+    vertical-align: super;
+}
+.cartaz-preco-principal .preco-inteiro {
+    font-size: 160pt;
+    letter-spacing: -5px;
+}
+.cartaz-preco-principal .preco-centavos {
+    font-size: 70pt;
+    vertical-align: super;
+}
+
+/* Preços Secundários (Atacado, Master) */
+.cartaz-outros-precos {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    font-size: 30pt;
+    line-height: 1.2;
+}
+.cartaz-outros-precos > div { padding: 0 2mm; }
+.cartaz-outros-precos .qtminiatac { font-size: 20pt; display: block; }
+/* Fontes dos preços secundários (para o novo layout do JS) */
+.cartaz-outros-precos .preco-inteiro-sec { font-size: 1em; }
+.cartaz-outros-precos .preco-centavos-sec { font-size: 0.6em; vertical-align: super; }
+
+/* Rodapé */
+.cartaz-rodape {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 14pt;
+}
+.cartaz-rodape .datas {
+    text-align: left;
+}
+.imagem-e-barcode {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cartaz-imagem-produto {
+    max-width: 100%;
+    max-height: 60mm;
+    margin-bottom: 3mm;
+    object-fit: contain;
+}
+.cartaz-rodape .barcode-area {
+    width: 100%;
+}
+.cartaz-rodape .barcode {
+    width: 100%;
+    height: 30mm; 
+}
+.escondido {
+    display: none !important;
+}
+
+/* Loading States e Feedback Visual */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.loading-text {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.input-error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.input-success {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none; /* oculto por padrão; use a classe .visible para mostrar */
+}
+.error-message.visible,
+.error-message.show {
+    display: block;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.help-text {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Estilo para rótulos de grupo que não estão associados a um campo específico */
+.group-label {
+    font-weight: 600;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+/* Melhorias de Responsividade */
+@media (max-width: 768px) {
+    .container-ui {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .grid-col-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .seletor-idioma {
+        position: static;
+        margin-bottom: 15px;
+        justify-content: center;
+    }
+    
+    .cartaz-preview-wrapper {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .cartaz-preview-wrapper {
+        width: 100%;
+        height: auto;
+    }
+    
+    .cartaz-layout {
+        transform: scale(0.8);
+    }
+    
+    .grupo-form-radio {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .grupo-form-radio label {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+}
+
+
+/*
+ * =======================================================
+ * REGRAS DE IMPRESSÃO (PONTO 2: CORREÇÃO DA IMPRESSÃO)
+ * =======================================================
+ */
+
+/* Definições de Página */
+@page formato-meia-a4 {
+    size: 297mm 210mm; /* A4 Paisagem */
+    margin: 0;
+}
+@page formato-a4 {
+    size: 210mm 297mm; /* A4 Vertical */
+    margin: 0;
+}
+@page formato-a3 {
+    size: 297mm 420mm; /* A3 Vertical */
+    margin: 0;
+}
+
+@media print {
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    body > *:not(.cartaz-container-preview) {
+        display: none;
+    }
+    .cartaz-container-preview {
+        display: block;
+    }
+    
+    /* PONTO 2: Correção da Impressão */
+    .cartaz-preview-wrapper {
+        margin: 0;
+        padding: 5mm; /* Padding para o conteúdo interno */
+        border: none;
+        overflow: hidden;
+        box-sizing: border-box;
+        page-break-after: always;
+        page-break-inside: avoid;
+    }
+     .cartaz-preview-wrapper:last-child {
+        page-break-after: auto; 
+    }
+
+    .formato-meia-a4 {
+        width: 297mm;
+        height: 210mm;
+        page: formato-meia-a4;
+    }
+    .formato-a4 {
+        width: 210mm;
+        height: 297mm;
+        page: formato-a4;
+    }
+    .formato-a3 {
+        width: 297mm;
+        height: 420mm;
+        page: formato-a3;
+    }
+    
+    /* PONTO 2: Remove a escala e reseta o layout interno */
+    .cartaz-layout {
+        transform: none !important;
+        padding: 0 !important; /* Padding foi movido para o wrapper */
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* --- Ajustes de escala de FONTE para os formatos --- */
+    
+    /* Meia A4 */
+    .formato-meia-a4 .cartaz-cabecalho-oferta { font-size: 60pt; }
+    .formato-meia-a4 .cartaz-descricao { font-size: 50pt; }
+    .formato-meia-a4 .cartaz-preco-principal .preco-inteiro { font-size: 130pt; }
+    .formato-meia-a4 .cartaz-preco-principal .preco-centavos { font-size: 60pt; }
+    .formato-meia-a4 .cartaz-preco-principal .embalagem-container { font-size: 40pt; }
+    .formato-meia-a4 .cartaz-outros-precos { font-size: 24pt; }
+    .formato-meia-a4 .cartaz-outros-precos .qtminiatac { font-size: 16pt; }
+    .formato-meia-a4 .cartaz-rodape { font-size: 10pt; }
+    .formato-meia-a4 .cartaz-imagem-produto { max-height: 40mm; }
+    .formato-meia-a4 .cartaz-rodape .barcode { height: 20mm; }
+
+    /* A4 */
+    .formato-a4 .cartaz-cabecalho-oferta { font-size: 80pt; }
+    .formato-a4 .cartaz-descricao { font-size: 70pt; }
+    .formato-a4 .cartaz-preco-principal .preco-inteiro { font-size: 160pt; }
+    .formato-a4 .cartaz-preco-principal .preco-centavos { font-size: 70pt; }
+    .formato-a4 .cartaz-preco-principal .embalagem-container { font-size: 60pt; }
+    .formato-a4 .cartaz-outros-precos { font-size: 30pt; }
+    .formato-a4 .cartaz-outros-precos .qtminiatac { font-size: 20pt; }
+    .formato-a4 .cartaz-rodape { font-size: 14pt; }
+    .formato-a4 .cartaz-imagem-produto { max-height: 60mm; }
+    .formato-a4 .cartaz-rodape .barcode { height: 30mm; }
+    
+    /* A3 */
+    .formato-a3 .cartaz-cabecalho-oferta { font-size: 100pt; }
+    .formato-a3 .cartaz-descricao { font-size: 90pt; }
+    .formato-a3 .cartaz-preco-principal .preco-inteiro { font-size: 200pt; }
+    .formato-a3 .cartaz-preco-principal .preco-centavos { font-size: 90pt; }
+    .formato-a3 .cartaz-preco-principal .embalagem-container { font-size: 70pt; }
+    .formato-a3 .cartaz-outros-precos { font-size: 40pt; }
+    .formato-a3 .cartaz-outros-precos .qtminiatac { font-size: 28pt; }
+    .formato-a3 .cartaz-rodape { font-size: 18pt; }
+    .formato-a3 .cartaz-imagem-produto { max-height: 60mm; }
+    .formato-a3 .cartaz-rodape .barcode { height: 30mm; }
+}
+
+/* Estilo para quando apenas o preço Master é exibido em destaque */
+.bloco-master-destaque {
+    font-size: 80pt;
+}
