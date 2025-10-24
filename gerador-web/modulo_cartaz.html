@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-t="cartaz_titulo">Módulo: Gerador de Cartazes</title>
+    <link rel="stylesheet" href="modulo_cartaz.css">
+    <link rel="stylesheet" href="style_menu.css"> 
+</head>
+<body>
+
+    <div class="container-ui">
+        <div class="seletor-idioma">
+            <label for="idioma-select">🌐</label>
+            <select id="idioma-select" onchange="mudarIdioma(this.value)">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+        <a href="index.html" class="link-voltar" data-t="voltar_menu">&larr; Voltar ao Menu Principal</a>
+        <h1 data-t="cartaz_titulo">Gerador de Cartazes</h1>
+
+        <fieldset>
+            <legend id="search-legend" data-t="pesquisar_produto">1. Pesquisar Produto (Use APENAS um campo)</legend>
+            <div class="grupo-form">
+                <label for="filial" data-t="filial_select">Filial:</label>
+                <select id="filial" aria-describedby="filial-help">
+                    <option value="2" selected data-t="filial_2">Filial 2</option>
+                    <option value="3" data-t="filial_3">Filial 3</option>
+                </select>
+                <div id="filial-help" class="help-text">Selecione a filial para pesquisa</div>
+            </div>
+            <div class="grupo-form">
+                <label for="searchCodProd" data-t="cod_internos">Cód. Internos (um por linha):</label>
+                <textarea 
+                    id="searchCodProd" 
+                    rows="5" 
+                    aria-describedby="cod-internos-help cod-internos-error"
+                    aria-required="true"
+                    data-t="cod_internos_placeholder" 
+                    placeholder="12345&#10;12346&#10;12347">
+                </textarea>
+                <div id="cod-internos-help" class="help-text">Digite um código por linha</div>
+                <div id="cod-internos-error" class="error-message" aria-live="polite"></div>
+            </div>
+            <div class="grupo-form">
+                <label for="searchCodAux" data-t="cod_auxiliares">Cód. Auxiliares (um por linha):</label>
+                <textarea 
+                    id="searchCodAux" 
+                    rows="5" 
+                    aria-describedby="cod-auxiliares-help cod-auxiliares-error"
+                    aria-required="true"
+                    data-t="cod_auxiliares_placeholder" 
+                    placeholder="7891000000000&#10;7891000000001">
+                </textarea>
+                <div id="cod-auxiliares-help" class="help-text">Digite um código por linha</div>
+                <div id="cod-auxiliares-error" class="error-message" aria-live="polite"></div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend data-t="parametros_cartaz">2. Parâmetros do Cartaz</legend>
+            <p class="aviso-legenda" data-t="aviso_legenda">
+                (Preencher os campos abaixo força a pesquisa de UM SÓ produto)
+            </p>
+            <div class="grid-col-2">
+                <div class="grupo-form">
+                    <label for="dtValidade" data-t="validade_produto">Validade do Produto:</label>
+                    <input type="date" id="dtValidade" class="param-unico">
+                </div>
+                <div class="grupo-form">
+                    <label for="dtOferta" data-t="vigencia_oferta">Vigência da Oferta:</label>
+                    <input type="date" id="dtOferta" class="param-unico">
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label for="descEditada" data-t="descricao_manual">Descrição Manual (Opcional):</label>
+                <input type="text" id="descEditada" class="param-unico" data-t="descricao_placeholder" placeholder="Sobrescreve a descrição do banco">
+            </div>
+            <div class="grupo-form-radio">
+                <span class="group-label" data-t="tipo_embalagem">Tipo Embalagem:</span>
+                <input type="radio" id="tipoEmbPadrao" name="tipoEmbalagem" value="PADRAO" checked>
+                <label for="tipoEmbPadrao" data-t="tipo_padrao">Padrão (Venda/Atac/Master)</label>
+                <input type="radio" id="tipoEmbVenda" name="tipoEmbalagem" value="VENDA">
+                <label for="tipoEmbVenda" data-t="tipo_venda">Apenas Venda</label>
+                <input type="radio" id="tipoEmbMaster" name="tipoEmbalagem" value="MASTER">
+                <label for="tipoEmbMaster" data-t="tipo_master">Apenas Master</label>
+            </div>
+            <div class="grupo-form-radio">
+                <span class="group-label" data-t="e_oferta">É Oferta?</span>
+                <input type="radio" id="tipoOfertaNao" name="tipoOferta" value="N" checked>
+                <label for="tipoOfertaNao" data-t="nao">Não</label>
+                <input type="radio" id="tipoOfertaSim" name="tipoOferta" value="S">
+                <label for="tipoOfertaSim" data-t="sim">Sim (Fundo Amarelo)</label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend data-t="formato_impressao">3. Formato de Impressão</legend>
+            <div class="grupo-form-radio">
+                <input type="radio" id="formatoMeiaA4" name="formatoPapel" value="formato-meia-a4" checked>
+                <label for="formatoMeiaA4" data-t="meia_a4">Meia A4 (Paisagem)</label>
+                <input type="radio" id="formatoA4" name="formatoPapel" value="formato-a4">
+                <label for="formatoA4" data-t="a4_vertical">A4 (Vertical)</label>
+                <input type="radio" id="formatoA3" name="formatoPapel" value="formato-a3">
+                <label for="formatoA3" data-t="a3_vertical">A3 (Vertical)</label>
+            </div>
+        </fieldset>
+
+        <button id="buscarBtn" data-t="gerar_cartazes">Gerar Cartaz(es)</button>
+        <button id="imprimirBtn" class="botao-imprimir" data-t="imprimir_cartazes">Imprimir Cartaz(es)</button>
+    </div>
+
+    <hr>
+
+    <div id="cartaz-container" class="cartaz-container-preview">
+        <div id="cartaz-placeholder" data-t="preview_placeholder">A pré-visualização dos seus cartazes aparecerá aqui.</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="idiomas.js"></script>
+    <script src="utils.js"></script>
+    <script src="verificacao.js"></script>
+    <script src="tests.js"></script>
+    <script src="modulo_cartaz.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const idiomaAtual = carregarIdioma();
+            document.getElementById('idioma-select').value = idiomaAtual;
+        });
+    </script>
+</body>
+</html>
