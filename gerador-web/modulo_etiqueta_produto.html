@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-t="etiqueta_titulo">Módulo: Etiquetas de Produto</title>
+    <link rel="stylesheet" href="modulo_etiqueta_produto.css">
+</head>
+<body>
+
+    <div class="container-ui">
+        
+        <div class="seletor-idioma">
+            <label for="idioma-select">🌐</label>
+            <select id="idioma-select" onchange="mudarIdioma(this.value)">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+        
+        <a href="index.html" class="link-voltar" data-t="voltar_menu">&larr; Voltar ao Menu Principal</a>
+
+        <h1 data-t="etiqueta_titulo">Gerador de Etiquetas de Produto</h1>
+        
+        <div class="filial-box">
+            <label data-t="filial_label">Filial:</label>
+            <input type="radio" id="filial2" name="filial" value="2" checked>
+            <label for="filial2" data-t="filial_2">Filial 2</label>
+            <input type="radio" id="filial3" name="filial" value="3">
+            <label for="filial3" data-t="filial_3">Filial 3</label>
+        </div>
+
+        <div class="busca-box">
+            <label for="codigosInput" data-t="codigos_label">Digite os Códigos Auxiliares (um por linha):</label>
+            <textarea id="codigosInput" rows="6" data-t="codigos_placeholder" placeholder="Ex: 789001&#10;789002&#10;789003"></textarea>
+            <button id="buscarBtn" data-t="gerar_etiquetas">Gerar Etiquetas</button>
+        </div>
+
+        <button id="imprimirBtn" class="botao-imprimir" data-t="imprimir_etiquetas">Imprimir Etiquetas</button>
+    </div>
+
+    <hr>
+
+    <div id="etiqueta-container" class="etiqueta-container">
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="idiomas.js"></script>
+    <script src="modulo_etiqueta_produto.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const idiomaAtual = carregarIdioma();
+            document.getElementById('idioma-select').value = idiomaAtual;
+        });
+    </script>
+</body>
+</html>
