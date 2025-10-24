@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-t="portal_titulo">Portal de Ferramentas</title>
+    <link rel="stylesheet" href="style_menu.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="seletor-idioma">
+            <label for="idioma-select">🌐</label>
+            <select id="idioma-select" onchange="mudarIdioma(this.value)">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+        <h1 data-t="portal_titulo">Portal de Ferramentas</h1>
+        <p data-t="portal_subtitulo">Selecione o módulo que deseja utilizar:</p>
+    </header>
+
+    <main class="container-menu">
+
+        <a href="modulo_etiqueta_produto.html" class="cartao-modulo">
+            <div class="modulo-icone">📦</div>
+            <h2 data-t="etiquetas_titulo">Etiquetas de Produto</h2>
+            <p data-t="etiquetas_descricao">Gerador de etiquetas de produto (formato 105x29mm).</p>
+        </a>
+
+        <a href="modulo_cartaz.html" class="cartao-modulo">
+            <div class="modulo-icone">🏷️</div>
+            <h2 data-t="cartazes_titulo">Gerador de Cartazes</h2>
+            <p data-t="cartazes_descricao">Módulo para gerar cartazes de preço (A4, A3, etc).</p>
+        </a>
+
+        </main>
+
+    <script src="idiomas.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const idiomaAtual = carregarIdioma();
+            document.getElementById('idioma-select').value = idiomaAtual;
+        });
+    </script>
+</body>
+</html>
