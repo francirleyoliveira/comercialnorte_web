@@ -268,7 +268,7 @@ hr {
 .cartaz-rodape {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-end;
     font-size: 14pt;
 }
