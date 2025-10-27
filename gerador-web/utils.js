@@ -16,7 +16,8 @@ const CONFIG = {
     VALIDATION: {
         MAX_CODE_LENGTH: 50,
         MIN_CODE_LENGTH: 1,
-        ALLOWED_CHARS: /^[a-zA-Z0-9]+$/
+        // ✅ CORRIGIDO: Aceita letras, números, hífens e underscores
+        ALLOWED_CHARS: /^[a-zA-Z0-9\-_]+$/
     }
 };
 
@@ -77,15 +78,33 @@ const sanitizeHTML = (html) => {
     return div.innerHTML;
 };
 
-// Validação robusta de códigos
+// ✅ Validação robusta de códigos - MELHORADA
 const validateCodes = (codes) => {
     if (!Array.isArray(codes)) return false;
     
+    // Se o array estiver vazio, retorna false
+    if (codes.length === 0) return false;
+    
     return codes.every(code => {
         const cleanCode = sanitizeInput(code);
-        return cleanCode.length >= CONFIG.VALIDATION.MIN_CODE_LENGTH && 
-               cleanCode.length <= CONFIG.VALIDATION.MAX_CODE_LENGTH && 
-               CONFIG.VALIDATION.ALLOWED_CHARS.test(cleanCode);
+        
+        // Ignorar linhas vazias
+        if (cleanCode.length === 0) return true;
+        
+        // Validar comprimento
+        if (cleanCode.length < CONFIG.VALIDATION.MIN_CODE_LENGTH || 
+            cleanCode.length > CONFIG.VALIDATION.MAX_CODE_LENGTH) {
+            console.warn(`[validateCodes] Código com tamanho inválido: "${cleanCode}" (${cleanCode.length} chars)`);
+            return false;
+        }
+        
+        // Validar caracteres permitidos
+        if (!CONFIG.VALIDATION.ALLOWED_CHARS.test(cleanCode)) {
+            console.warn(`[validateCodes] Código com caracteres inválidos: "${cleanCode}"`);
+            return false;
+        }
+        
+        return true;
     });
 };
 
@@ -206,34 +225,58 @@ const FormValidator = {
         
         ValidationManager.clearAll();
         
+        // Validação: não pode preencher ambos os campos
         if (codProdValue && codAuxValue) {
             ValidationManager.showError('searchCodProd', 'Use apenas um tipo de código por vez');
             ValidationManager.showError('searchCodAux', 'Use apenas um tipo de código por vez');
             return false;
         }
         
+        // Validação: precisa preencher pelo menos um
         if (!codProdValue && !codAuxValue) {
             ValidationManager.showError('searchCodProd', 'Digite pelo menos um código');
             ValidationManager.showError('searchCodAux', 'Digite pelo menos um código');
             return false;
         }
         
-        // Validar códigos se preenchidos
+        // ✅ MELHORADO: Validar códigos se preenchidos
         if (codProdValue) {
-            const codes = codProdValue.split('\n').filter(c => c.trim());
-            if (!validateCodes(codes)) {
-                ValidationManager.showError('searchCodProd', 'Códigos inválidos. Use apenas letras e números');
+            const codes = codProdValue.split('\n')
+                .map(c => c.trim())
+                .filter(c => c.length > 0); // Remove linhas vazias
+            
+            console.log('[FormValidator] Códigos Internos:', codes);
+            
+            if (codes.length === 0) {
+                ValidationManager.showError('searchCodProd', 'Digite pelo menos um código válido');
                 return false;
             }
+            
+            if (!validateCodes(codes)) {
+                ValidationManager.showError('searchCodProd', 'Códigos inválidos. Use apenas letras, números, hífens e underscores');
+                return false;
+            }
+            
             ValidationManager.showSuccess('searchCodProd');
         }
         
         if (codAuxValue) {
-            const codes = codAuxValue.split('\n').filter(c => c.trim());
-            if (!validateCodes(codes)) {
-                ValidationManager.showError('searchCodAux', 'Códigos inválidos. Use apenas letras e números');
+            const codes = codAuxValue.split('\n')
+                .map(c => c.trim())
+                .filter(c => c.length > 0); // Remove linhas vazias
+            
+            console.log('[FormValidator] Códigos Auxiliares:', codes);
+            
+            if (codes.length === 0) {
+                ValidationManager.showError('searchCodAux', 'Digite pelo menos um código válido');
                 return false;
             }
+            
+            if (!validateCodes(codes)) {
+                ValidationManager.showError('searchCodAux', 'Códigos inválidos. Use apenas letras, números, hífens e underscores');
+                return false;
+            }
+            
             ValidationManager.showSuccess('searchCodAux');
         }
         
