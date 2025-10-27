@@ -199,12 +199,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listener do botão "Gerar Cartaz(es)"
     buscarBtn.addEventListener('click', async () => {
+    
+    // Validação prévia
+    const searchFieldsValid = FormValidator.validateSearchFields();
+    const specialParamsValid = FormValidator.validateSpecialParams();
+    
+    if (!searchFieldsValid || !specialParamsValid) {
+        const errors = ValidationManager.getErrors();
+        logger.warn('Validação falhou', {
+            totalErros: errors.length,
+            erros: errors,
+            searchFieldsValid,
+            specialParamsValid
+        });
         
-        // Validação prévia
-        if (!FormValidator.validateSearchFields() || !FormValidator.validateSpecialParams()) {
-            logger.warn('Validação falhou', ValidationManager.getErrors());
-            return;
+        // Mostrar feedback visual para o usuário
+        if (errors.length === 0) {
+            logger.warn('⚠️ Validação falhou mas nenhum erro foi registrado');
         }
+        
+        return;
+    }
 
         // 1. Coleta dos campos de pesquisa (com sanitização)
         const codProdList = searchCodProdInput.value.split('\n')
