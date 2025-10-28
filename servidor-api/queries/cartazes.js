@@ -190,7 +190,7 @@ const getCartazesPorCodigos = () => {
             
             CASE 
                 WHEN tblprecocx.embalagem IS NULL THEN NULL
-                ELSE tblprecocx.embalagem || ':'
+                ELSE tblprecocx.embalagem 
             END as embalagemcx,
             
             tblprecocx.qtunit as qtunitcx,
